@@ -1,0 +1,37 @@
+name: Scrape Equal Protect Cases
+
+# Run every 2 weeks at midnight UTC
+on:
+  schedule:
+    - cron: "0 0 */14 * *" # every 14 days
+  workflow_dispatch: # allows manual trigger
+
+jobs:
+  scrape-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas requests beautifulsoup4 playwright
+          playwright install
+
+      - name: Run scraper
+        run: python scraper.py
+
+      - name: Commit updated CSVs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/*.csv
+          git commit -m "Update scraped CSVs [skip ci]" || echo "No changes to commit"
+          git push
