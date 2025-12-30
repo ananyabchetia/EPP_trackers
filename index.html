@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equal Protection Project - Complaints Tracker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial;
+            background: linear-gradient(135deg, #ffffff 0%);
+            min-height: 100vh;
+            padding: 10px;
+            padding-top: 100px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            border-radius: 3px;
+
+        }
+
+        header {
+            text-align: center;
+            color: rgb(44, 10, 10);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgb(254, 250, 250);
+            padding: 25px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.0em;
+            color: #090505;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #241010;
+            font-size: 0.9em;
+        }
+
+        .search-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #0e1845;
+        }
+
+        .view-all-btn {
+            text-align: center;
+            padding: 20px;
+            background: white;
+        }
+
+        .btn {
+            background: #f7eaea;
+            color: rgb(22, 9, 9);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 1px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background: #e2a4a4;
+        }
+
+        .table-container {
+            background: rgb(255, 255, 255);
+            border-radius: 1px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f6f3f3;
+            color: rgb(13, 0, 0);
+        }
+
+        th {
+            padding: 19px;
+            text-align: left;
+            font-weight: 400;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: px solid #f0f0f0;
+        }
+
+        tbody tr {
+            transition: background-color 0.2s;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        .complaint-link {
+            color: #120101;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .complaint-link:hover {
+            text-decoration: underline;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: rgb(44, 10, 10);
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th,
+            td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Tracking Complaints Against Schools, Universities and Education Programs</h1>
+            <p class="subtitle">By the Equal Protection Project</p>
+        </header>
+
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalComplaints">-</div>
+                <div class="stat-label">Total Complaints</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="latestDate">-</div>
+                <div class="stat-label">Most Recent</div>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search by institution name...">
+        </div>
+
+        <div class="table-container">
+            <div id="loading" class="loading">Loading data...</div>
+            <table id="complaintsTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Complaint Against</th>
+                        <th>Date Filed</th>
+                        <th>Complaint Link</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="view-all-btn" id="viewAllContainer" style="display: none;">
+            <button class="btn" id="viewAllBtn" onclick="toggleViewAll()">View All Complaints</button>
+        </div>
+    </div>
+
+    <script>
+        let allData = [];
+        let currentData = [];
+        let showingAll = false;
+
+        async function loadData() {
+            try {
+                const response = await fetch('data/complaints.csv');
+                const csvText = await response.text();
+
+                Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: function (results) {
+                        allData = results.data;
+                        currentData = allData;
+                        updateStats();
+                        displayData();
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('complaintsTable').style.display = 'table';
+
+                        // Show "View All" button if there are more than 5 complaints
+                        if (allData.length > 5) {
+                            document.getElementById('viewAllContainer').style.display = 'block';
+                        }
+                    }
+                });
+            } catch (error) {
+                document.getElementById('loading').innerHTML =
+                    '<div class="no-data">Error loading data. Please make sure complaints.csv exists in the data folder.</div>';
+                console.error('Error loading CSV:', error);
+            }
+        }
+
+        function updateStats() {
+            const totalComplaints = allData.length;
+            document.getElementById('totalComplaints').textContent = totalComplaints;
+
+            // Get latest date
+            if (allData.length > 0) {
+                const dates = allData.map(row => new Date(row['Date of Complaint']));
+                const latestDate = new Date(Math.max(...dates));
+                document.getElementById('latestDate').textContent =
+                    latestDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            }
+        }
+
+        function displayData() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            if (currentData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" class="no-data">No complaints found</td></tr>';
+                return;
+            }
+
+            // Sort by date (newest first)
+            const sortedData = currentData.sort((a, b) =>
+                new Date(b['Date of Complaint']) - new Date(a['Date of Complaint'])
+            );
+
+            // Limit to 5 unless showing all
+            const displayData = showingAll ? sortedData : sortedData.slice(0, 5);
+
+            displayData.forEach(row => {
+                const tr = document.createElement('tr');
+
+                const dateFormatted = new Date(row['Date of Complaint']).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+
+                tr.innerHTML = `
+                    <td><strong>${row.Complaint}</strong></td>
+                    <td>${dateFormatted}</td>
+                    <td><a href="${row.Link}" target="_blank" class="complaint-link">View Complaint</a></td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function toggleViewAll() {
+            showingAll = !showingAll;
+            const btn = document.getElementById('viewAllBtn');
+            btn.textContent = showingAll ? 'Show Less' : 'View All Complaints';
+            displayData();
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            showingAll = false;
+
+            currentData = allData.filter(row =>
+                row.Complaint.toLowerCase().includes(searchTerm)
+            );
+
+            // Show/hide and update view all button
+            const viewAllContainer = document.getElementById('viewAllContainer');
+            const viewAllBtn = document.getElementById('viewAllBtn');
+
+            if (currentData.length > 5) {
+                viewAllContainer.style.display = 'block';
+                viewAllBtn.textContent = 'View All Complaints';
+            } else {
+                viewAllContainer.style.display = 'none';
+            }
+
+            displayData();
+        });
+
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+
+</html>
