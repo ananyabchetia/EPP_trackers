@@ -52,7 +52,7 @@
         }
 
         .stat-card {
-            background: rgb(254, 250, 250);
+            background: rgb(246, 239, 239);
             padding: 25px;
             text-align: center;
         }
@@ -123,14 +123,14 @@
         }
 
         thead {
-            background: #f6f3f3;
+            background: rgb(246, 239, 239);
             color: rgb(13, 0, 0);
         }
 
         th {
             padding: 19px;
             text-align: left;
-            font-weight: 400;
+            font-weight: 200;
         }
 
         td {
@@ -275,7 +275,7 @@
                 const dates = allData.map(row => new Date(row['Date of Complaint']));
                 const latestDate = new Date(Math.max(...dates));
                 document.getElementById('latestDate').textContent =
-                    latestDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                    latestDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             }
         }
 
