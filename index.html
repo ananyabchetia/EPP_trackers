@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equal Protection Project - Complaints Tracker</title>
+    <link rel="icon" type="image/png" href="./image/magnifyingglass.png">
+    <title>EPP Complaints Tracker</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
         * {
@@ -306,7 +307,7 @@
                 });
 
                 tr.innerHTML = `
-                    <td><strong>${row.Complaint}</strong></td>
+                    <td>${row.Complaint}</td>
                     <td>${dateFormatted}</td>
                     <td><a href="${row.Link}" target="_blank" class="complaint-link">View Complaint</a></td>
                 `;
