@@ -36,14 +36,57 @@
         }
 
         h1 {
-            font-size: 1.5em;
+            font-size: 2.0em;
             margin-bottom: 10px;
         }
 
-        .subtitle {
-            font-size: 1.1em;
-            opacity: 0.9;
+        h2 {
+            font-size: 2.0em;
+            margin-bottom: 10px;
+
+            text-align: left;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 965px;
         }
+
+
+        .subtitle {
+            font-size: 1.5em;
+            opacity: 0.9;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .text {
+            font-size: 1.2em;
+            opacity: 0.9;
+            text-align: left;
+            margin: 0 auto;
+            max-width: 1000px;
+            padding: 0 1rem;
+
+            line-height: 1.6;
+        }
+
+        .date {
+            font-size: 1.1em;
+            opacity: 0.7;
+            text-align: left;
+            margin: 0 auto;
+            max-width: 1000px;
+            padding: 0 1rem;
+
+            line-height: 1.6;
+        }
+
+
+
+        .text p {
+            margin-bottom: 1.2em;
+            /* space between paragraphs */
+        }
+
 
         .stats {
             display: grid;
@@ -53,7 +96,7 @@
         }
 
         .stat-card {
-            background: rgb(246, 239, 239);
+            background: rgb(219, 228, 255);
             padding: 25px;
             text-align: center;
         }
@@ -91,6 +134,11 @@
             border-color: #0e1845;
         }
 
+        #viewAllContainer {
+            margin-bottom: 20px;
+        }
+
+
         .view-all-btn {
             text-align: center;
             padding: 20px;
@@ -98,7 +146,7 @@
         }
 
         .btn {
-            background: #f7eaea;
+            background: rgb(219, 228, 255);
             color: rgb(22, 9, 9);
             border: none;
             padding: 12px 20px;
@@ -109,7 +157,7 @@
         }
 
         .btn:hover {
-            background: #e2a4a4;
+            background: #9a99d5;
         }
 
         .table-container {
@@ -124,7 +172,7 @@
         }
 
         thead {
-            background: rgb(246, 239, 239);
+            background: rgb(219, 228, 255);
             color: rgb(13, 0, 0);
         }
 
@@ -231,6 +279,38 @@
         <div class="view-all-btn" id="viewAllContainer" style="display: none;">
             <button class="btn" id="viewAllBtn" onclick="toggleViewAll()">View All Complaints</button>
         </div>
+
+        <div>
+            <header>
+                <h2>More about the live tracker</h2>
+                <p class="text"> The Equal Protection Project, an initiative of the conservative nonprofit Legal
+                    Insurrection
+                    Foundation, filed over
+                    100
+                    complaints against universities nationwide and challenged over 700 scholarships on the basis of
+                    race- or
+                    gender-based discrimination.</p>
+
+                <p class="text">My website auto updates every two weeks and identifies which universities, schools or
+                    programs as EPP
+                    filed a
+                    complaint against next.</p>
+
+                <p class="text">In my upcoming story for Chalkbeat New York, my analysis shows that after the EPP files
+                    complaints
+                    against race-based
+                    or minority scholarships for students of color, universities quietly remove these scholarships or
+                    alter the language
+                    of it so that it no longer exclusively supports a marginalized community.</p>
+
+                <p class="text">Feel free to use my tool to identify if your university is on the list and check out my
+                    website
+                    regularly for the
+                    latest updates.</p>
+
+            </header>
+        </div>
+
     </div>
 
     <script>
@@ -345,8 +425,6 @@
 
             displayData();
         });
-
-        // Load data on page load
         loadData();
     </script>
 </body>
