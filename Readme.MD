@@ -15,11 +15,11 @@ https://ananyabchetia.github.io/EPP_trackers/
 
 Data folder — cleaned and structured complaint data that updates every two weeks.
 
-Jupyter notebook (epp-scraper.ipynb) — This is where I initially developed and tested the scraping logic before moving it into scraper.py. I used the Playwright library to scrape.
+notebook --> epp-scraper.ipynb — This is where I initially developed and tested the scraping logic before moving it into scraper.py. I used the Playwright library to scrape.
 
-Python scraper (scraper.py) — pulls complaint details from public sources
+src -->  scraper.py — pulls complaint details from public sources
 
-Static site (index.html) — displays the tracker live
+index.html — displays the tracker live
 
 Images and assets — visual elements used on the tracker site
 
