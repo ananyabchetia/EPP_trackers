@@ -6,8 +6,6 @@ A [tracker](https://ananyabchetia.github.io/EPP_trackers/) that collects and dis
 
 This project aggregates and updates a dataset of higher education institutions that the Equal Protection Project has filed civil rights complaints against, including the dates the complaints were filed. The tracker updates automatically every two weeks so readers and researchers can see the most recent filings at a glance.
 
-The Equal Protection Project is a legal initiative that has filed complaints with government civil rights offices against colleges and universities alleging discrimination in scholarship or program eligibility based on race, nationality, or other protected classes.
-
 ## Live Demo
 
 Visit the interactive tracker here:
@@ -17,7 +15,7 @@ https://ananyabchetia.github.io/EPP_trackers/
 
 Data folder — cleaned and structured complaint data that updates every two weeks.
 
-Jupyter notebook (EPP scrape.ipynb) — for scraping and preprocessing complaint data
+Jupyter notebook (epp-scraper.ipynb) — This is where I initially developed and tested the scraping logic before moving it into scraper.py. I used the Playwright library to scrape.
 
 Python scraper (scraper.py) — pulls complaint details from public sources
 
@@ -31,13 +29,25 @@ The scraper collects public complaint entries filed by the Equal Protection Proj
 
 Data is cleaned and structured into a consistent list of universities and complaint dates. The site reads this data and displays:
 
-    a. Institution name
+1. Institution name
 
-    b. Date complaint was filed
+2. Date complaint was filed
 
-    c. Link to the original complaint source
+3. Link to the original complaint source
 
 The tracker refreshes every two weeks to include new filings.
+
+## Automation:
+
+A GitHub Actions workflow (.github/workflows/scrape_epp.yml) runs src/scraper.py automatically on a two-week schedule. The workflow:
+
+1. Sets up a Python environment and installs required packages.
+
+2. Runs scraper.py to collect the latest complaint data.
+
+3. Commits and pushes any updated CSVs back to the repository.
+
+This ensures the tracker always has up-to-date complaint entries without manual intervention.
 
 ## Tech Stack
 

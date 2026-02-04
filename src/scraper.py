@@ -5,10 +5,8 @@ from bs4 import BeautifulSoup
 from playwright.async_api import async_playwright
 import os
 
-# Get the folder where scraper.py is located
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Make sure the data folder exists inside the repo
 os.makedirs(os.path.join(BASE_DIR, "data"), exist_ok=True)
 
 
@@ -18,7 +16,6 @@ async def main():
         page = await browser.new_page()
         await page.goto("https://equalprotect.org/case/")
         
-        # Click "Load More" until all content is loaded
         while True:
             try:
                 load_more = page.locator("#cpt-load-more")
@@ -32,7 +29,6 @@ async def main():
         full_html = await page.content()
         await browser.close()
     
-    # Parse main page HTML
     soup = BeautifulSoup(full_html, "html.parser")
     links = soup.find_all("a", class_="text-xl font-semibold black-st hover:blue-st")
     
@@ -47,7 +43,6 @@ async def main():
         else:
             university_name = full_text
         
-        # Request the individual case page to get the date
         response = requests.get(href)
         soup_doc = BeautifulSoup(response.text, "html.parser")
         try:
@@ -65,6 +60,5 @@ async def main():
     df.to_csv(os.path.join(BASE_DIR, "data", "complaints.csv"), index=False)
     print("Scraping complete! CSV saved to data/complaints.csv")
 
-# Run the async main function
 if __name__ == "__main__":
     asyncio.run(main())
