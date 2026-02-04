@@ -13,15 +13,17 @@ https://ananyabchetia.github.io/EPP_trackers/
 
 ## File Structure
 
-Data folder — cleaned and structured complaint data that updates every two weeks.
+.github/workflow/scrape_epp.yml - has the Github Actions workflow which runs src/scraper.py automatically on a two-week schedule
 
-notebook --> epp-scraper.ipynb — This is where I initially developed and tested the scraping logic before moving it into scraper.py. I used the Playwright library to scrape.
+data — cleaned and structured complaint data that updates every two weeks
 
-src -->  scraper.py — pulls complaint details from public sources
+notebook/epp-scraper.ipynb — This is where I initially developed and tested the scraping logic before moving it into scraper.py. I used the Playwright library to scrape
+
+src/scraper.py — pulls complaint details from public sources
 
 index.html — displays the tracker live
 
-Images and assets — visual elements used on the tracker site
+image — visual elements used for the favicon tag
 
 ## How It Works
 
