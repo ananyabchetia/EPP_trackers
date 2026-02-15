@@ -19,7 +19,7 @@ data — cleaned and structured complaint data that updates every two weeks
 
 notebook/epp-scraper.ipynb — This is where I initially developed and tested the scraping logic before moving it into scraper.py. I used the Playwright library to scrape
 
-src/scraper.py — pulls complaint details from public sources
+scraper.py — pulls complaint details from public sources
 
 index.html — displays the tracker live
 
