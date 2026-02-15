@@ -431,7 +431,7 @@
 
       async function loadData() {
         try {
-          const response = await fetch("data/complaints.csv");
+          const response = await fetch(`data/complaints.csv?t=${Date.now()}`);
           const csvText = await response.text();
 
           Papa.parse(csvText, {
