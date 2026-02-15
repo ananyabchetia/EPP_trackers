@@ -1,7 +1,7 @@
 name: Scrape Equal Protect Cases
 on:
   schedule:
-    - cron: "0 0 */14 * *"
+    - cron: "0 0 1,15 * *"
   workflow_dispatch:
 
 permissions:

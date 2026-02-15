@@ -71,20 +71,6 @@ This tracker helps journalists, researchers and the public monitor legally signi
 
 3. Use the dates and complaint links to dive deeper into primary sources.
 
-## Development
-
-To run or modify the scraper locally:
-
-Clone the repository
-
-git clone https://github.com/ananyabchetia/EPP_trackers.git
-
-### Install dependencies (e.g., pandas, requests)
-
-Run the scraper or notebook to update data
-
-(Note: The live demo is hosted via GitHub Pages and updates automatically; running locally isn’t required to view the tracker.)
-
 ## Goals
 
 Add geographic context to each university by integrating a university API to include city and state information. This will allow users to search by state, rather than only by institution name, improving search flexibility and usability.
